@@ -1,0 +1,17 @@
+{
+  "name": "ssh-config",
+  "version": "0.1.0",
+  "description": "ssh config cli",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "c060604 <c060604@gmail.com>",
+  "license": "ISC",
+  "bin": {
+    "ssh-config": "index.js"
+  },
+  "dependencies": {
+    "commander": "^2.20.0",
+    "shelljs": "^0.8.3"
+  }
+}
