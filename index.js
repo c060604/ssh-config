@@ -11,6 +11,7 @@ const HOST_FLAG = "Host";
 program.version("0.1.0");
 
 // set proxy
+// TODO: reset all existent configs' proxy
 program
     .command("set-proxy <proxy>")
     .description("setup proxy")
@@ -71,7 +72,11 @@ program
     .description("delete ssh config")
     .option("-H, --host <host>", "Which host to delete")
     .action(function(cmd) {
-        // TODO: throw error when the file does not exist.
+        if (!isExist(SSH_CONFIG_PATH)) {
+            console.log(`error: the host ${cmd.host} not found in the config`);
+            return;
+        }
+
         const config = shell.cat(SSH_CONFIG_PATH);
         const configs = config.toString().split(HOST_FLAG);
         const index = configs.findIndex(item => item.trim().startsWith(cmd.host));
@@ -85,4 +90,22 @@ program
         }
     });
 
+// list all configs
+program
+    .command("ls")
+    .description("list all configs")
+    .action(function() {
+        if (isExist(SSH_CONFIG_PATH)) {
+            const config = shell.cat(SSH_CONFIG_PATH);
+            console.log(config.toString());
+        }
+    });
+
 program.parse(process.argv);
+
+function isExist(filePath) {
+    if (shell.exec(`ls ${SSH_CONFIG_PATH}`, {silent: true}).code !== 0) {
+        return false;
+    }
+    return true;
+}
