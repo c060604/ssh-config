@@ -101,6 +101,17 @@ program
         }
     });
 
+// remove all configs
+program
+    .command("remove-all")
+    .description("remove all configs")
+    .action(function() {
+        if (isExist(SSH_CONFIG_PATH)) {
+            shell.rm("-rf", SSH_CONFIG_PATH)
+        }
+        console.log("remove all configs done.");
+    })
+
 program.parse(process.argv);
 
 function isExist(filePath) {
