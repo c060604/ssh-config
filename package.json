@@ -1,5 +1,5 @@
 {
-  "name": "ssh-config",
+  "name": "@c060604/ssh-config",
   "version": "0.1.0",
   "description": "ssh config cli",
   "scripts": {
@@ -13,5 +13,19 @@
   "dependencies": {
     "commander": "^2.20.0",
     "shelljs": "^0.8.3"
-  }
+  },
+  "main": "index.js",
+  "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/c060604/ssh-config.git"
+  },
+  "keywords": [
+    "ssh",
+    "config"
+  ],
+  "bugs": {
+    "url": "https://github.com/c060604/ssh-config/issues"
+  },
+  "homepage": "https://github.com/c060604/ssh-config#readme"
 }
