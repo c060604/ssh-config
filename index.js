@@ -31,7 +31,9 @@ program
     .option("-u, --user <user>", "Which user to login")
     .option("-p, --proxy <proxy>", "Which proxy to use")
     .action(function(cmd) {
-        // TODO: to avoid the same host config
+        // To avoid the same host config
+        removeHostConfig(cmd.host);
+
         let proxy;
         if (!cmd.host) {
             console.log("option '-H, --host <host>' argument missing");
@@ -77,15 +79,10 @@ program
             return;
         }
 
-        const config = shell.cat(SSH_CONFIG_PATH);
-        const configs = config.toString().split(HOST_FLAG);
-        const index = configs.findIndex(item => item.trim().startsWith(cmd.host));
-        if (index === -1) {
+        const result = removeHostConfig(cmd.host);
+        if (!result) {
             console.log(`error: the host ${cmd.host} not found in the config`);
         } else {
-            // delete the host config
-            configs.splice(index, 1);
-            shell.exec(`echo '${configs.join(HOST_FLAG)}' > ${SSH_CONFIG_PATH}`);
             console.log(`delete ${cmd.host} config done.`);
         }
     });
@@ -119,4 +116,18 @@ function isExist(filePath) {
         return false;
     }
     return true;
+}
+
+function removeHostConfig(host) {
+    const config = shell.cat(SSH_CONFIG_PATH);
+    const configs = config.toString().split(HOST_FLAG);
+    const index = configs.findIndex(item => item.trim().startsWith(host));
+    if (index === -1) {
+        return false;
+    } else {
+        // delete the host config
+        configs.splice(index, 1);
+        shell.exec(`echo '${configs.join(HOST_FLAG)}' > ${SSH_CONFIG_PATH}`);
+        return true;
+    }
 }
